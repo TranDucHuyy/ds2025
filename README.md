@@ -9,6 +9,7 @@ Students are expected to:
 Student Info
 =========================
 
-* Student Name: USTH ICT1
-* Student ID: Not-Vietnamese
+* Student Name: Tran Duc Huy
+* Student ID: BA12-085 
 * Student Group ID: Not-for-now
+
