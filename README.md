@@ -11,5 +11,5 @@ Student Info
 
 * Student Name: Tran Duc Huy
 * Student ID: BA12-085 
-* Student Group ID: 03
+* Student Group ID: 13
 
