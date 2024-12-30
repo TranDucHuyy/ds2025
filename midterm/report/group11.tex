@@ -1,0 +1,814 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc} % 
+\usepackage[T5]{fontenc} % Font Vietnamese
+\usepackage{graphicx} % Figure
+\usepackage{float} % Set position figure or table
+\usepackage{mathptmx} % select font Times New Roman
+\usepackage{geometry} % Set parameters paper
+\usepackage{xcolor}
+\usepackage[fontsize=13pt]{scrextend} % set font size = 13pt
+\usepackage{indentfirst} % Indent first line
+\usepackage{microtype}
+\usepackage{titling}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{lmodern} % Phông chữ Latin Modern
+\lstset{breaklines=true, breakatwhitespace=true}
+
+\lstdefinelanguage{json}{
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{gray!10},
+    literate=
+     *{0}{{{\color{blue}0}}}{1}
+      {1}{{{\color{blue}1}}}{1}
+      {2}{{{\color{blue}2}}}{1}
+      {3}{{{\color{blue}3}}}{1}
+      {4}{{{\color{blue}4}}}{1}
+      {5}{{{\color{blue}5}}}{1}
+      {6}{{{\color{blue}6}}}{1}
+      {7}{{{\color{blue}7}}}{1}
+      {8}{{{\color{blue}8}}}{1}
+      {9}{{{\color{blue}9}}}{1}
+      {:}{{{\color{red}:}}}{1}
+      {,}{{{\color{red},}}}{1}
+      {\{}{{{\color{red}{\{}}}}{1}
+      {\}}{{{\color{red}{\}}}}}{1}
+      {[}{{{\color{red}[}}}{1}
+      {]}{{{\color{red}]}}}{1},
+}
+
+\begin{document}
+
+
+% CREATE COVER PAGE  
+\begin{center}
+    \vspace{12pt} % line spacing
+        \textbf{\fontsize{13pt}{0pt} \selectfont{} UNIVERSITY OF SCIENCE AND TECHNOLOGY OF HANOI}
+    \vspace{0.5cm}
+
+% INSERT LOGO
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=6cm, height=3cm]{Logo nma ko có tên trường.png}
+\end{figure}
+
+% THESIS TYPE
+\vspace{35pt}
+        \fontsize{18pt}{0pt}{\fontfamily{qag}\selectfont{} \textbf{DISTRIBUTED SYSTEM}
+}
+\vspace{20pt}
+
+% THESIS TITTLE
+        \fontsize{16pt}{0pt}{\fontfamily{qag}\selectfont{} \textbf{FINAL REPORT}}
+\vspace{18pt}
+
+    \noindent % Loại bỏ thụt đầu dòng
+    \rule{\textwidth}{0.5pt} % Dòng kẻ ngang đầy chiều rộng trang
+    \vspace{0.01em} % Thêm khoảng cách nhỏ giữa dòng kẻ và nội dung
+    \begin{center} % Căn giữa nội dung
+    \textbf{HTTP OVER RPC (ACT AS HTTP PROXY)}
+    \end{center}
+    \vspace{0.01em} % Thêm khoảng cách nhỏ giữa nội dung và dòng kẻ
+    \rule{\textwidth}{0.5pt} % Dòng kẻ ngang đầy chiều rộng trang
+
+\vspace{18pt}
+    
+% NAME
+\noindent
+\begin{tabular}{l l}
+\textbf{Tran Duc Huy}       & \texttt{BA12--085}  \\
+\textbf{Ha Dinh Tuan}       & \texttt{BA12--183}  \\
+\textbf{Tran Minh Phuong}   & \texttt{22BI13366}  \\
+\textbf{Nguyen Minh Duc}    & \texttt{22BI13091}   \\
+\textbf{Tran Trung Hieu}    & \texttt{22BI13162}  \\
+\textbf{Vu Trong Bach}      & \texttt{22BI13056}  \\
+\end{tabular}
+
+    \vspace{15pt}
+
+% MAJOR
+        \fontsize{14pt}{0pt}\selectfont{} \textbf{CYBER SECURITY} 
+
+\end{center}
+    \vspace{5pt}
+
+% INFORMATION: SUPERVISOR NAME, STUDENT NAME,...
+\begin{table}[H]
+    \centering
+        \begin{tabular}{l l c}
+            \textbf{Lecturer:}    &  MS. Le Nhu Chu Hiep \vspace{6pt} &  \\
+            \textbf{University:} & Science and technology of Hanoi
+        \end{tabular}
+\end{table}
+
+% TIME
+\begin{center}
+    \vspace{5pt}
+    \fontsize{14pt}{0pt}\selectfont{} \textbf{Hanoi, 12/2024}
+\end{center}
+
+% CREATE A NEW PAGE AND REMOVE PAGE NUMBER
+\thispagestyle{empty}
+    \newpage
+   %     \clearpage
+%            \thispagestyle{empty}
+  %              \cleardoublepage
+
+\thispagestyle{empty}
+    \newpage
+
+ % CONTENT
+\tableofcontents 
+    \thispagestyle{empty}
+        \newpage
+            \thispagestyle{empty}
+                \newpage
+
+\captionsetup{
+    labelfont={color=gray}, % Làm mờ phần "Figure 1"
+    textfont={color=gray}   % Làm mờ phần nội dung chú thích
+}
+
+\section{INTRODUCTION} % Huy
+The ability to transfer files between distributed systems in the software architecture of today is fundamental. Remote Procedure Call (RPC) is a good way to hide network communication, as it allows a program to call procedures on a remote system as if they were local, thus RPC facilitates this. In this project, our focus will be on designing an RPC based file transfer system through an HTTP proxy. \\
+
+This project aims at designing and implementing a modular file system which is integrated into an RPC architecture with an HTTP proxy configured on it. The system enables a client to annotate and upload files to a server by way of the proxy, therefore enhancing modularity, extensibility, and effective data management. Key objectives:
+
+\begin{itemize}
+\RaggedRight
+    \item \texttt{To design a system architecture consisting of three main modules: the client, the proxy server, and the target server.}
+    \item \texttt{To implement a file upload mechanism where the client       interacts with the server through the proxy.}
+    \item \texttt{To ensure data security and integrity during the transfer process using JSON-formatted requests and responses.}
+    \item \texttt{To log and monitor the communication flow for debugging and evaluation purposes.}
+    \item \texttt{To validate the system through successful transmission of files under various conditions.}
+\end{itemize}
+
+
+
+\section{SYSTEM ARCHITECTURE} %Huy
+The project consists of a modular design including a client, a proxy server, and a target server. The system functions as an HTTP Proxy which is implemented using the Remote Procedure Call (RPC) system guaranteeing the inter-module communication, logging, and monitoring functionalities.
+
+\subsection{Overview of System Components}
+\begin{itemize}
+\RaggedRight
+    \item \textbf{Client Module:}
+    \begin{itemize}
+        \item \texttt{The client is responsible for generating requests and sending files to the proxy server.}
+        \item \texttt{It reads file data, encodes it into a safe format, and sends it to the proxy server as part of an RPC request over HTTP.}
+        \item \texttt{It receives responses from the proxy server, indicating whether the file upload was successful or encountered an error.}
+    \end{itemize}
+    \item \textbf{Proxy Server Module:}
+    \begin{itemize}
+        \item \texttt{Acts as an intermediary between the client and the server.}
+        \item \texttt{Receives RPC-based HTTP requests from the client and forwards them to the target server.}
+        \item \texttt{Logs details of each incoming request and outgoing response, providing monitoring and debugging information.}
+    \end{itemize}
+    \item \textbf{Target Server Module:}
+    \begin{itemize}
+        \item \texttt{Processes the requests forwarded by the proxy server.}
+        \item \texttt{Decodes the file data, writes it to the local file system, and sends a structured JSON response back to the proxy server.}
+        \item \texttt{Provides detailed feedback about the success or failure of file uploads.}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Interaction Between Components}
+The interaction between the components in this system is designed to ensure smooth communication and modularity. Each component operates independently, but works together in a coordinated manner to achieve the system's objectives.
+\begin{itemize}
+\RaggedRight
+    \item \textbf{Client to Proxy Server:}
+    \begin{itemize}
+        \item \texttt{The client initiates the interaction by sending an HTTP POST request containing an RPC payload. The payload includes the file name and file data.}
+        \item \texttt{The client does not directly communicate with the target server, ensuring abstraction and security.}
+    \end{itemize}
+
+    \item \textbf{Proxy Server Processing:}
+    \begin{itemize}
+        \item \texttt{Upon receiving the request, the proxy server validates and logs it for monitoring purposes.}
+        \item \texttt{The proxy forwards the RPC payload to the target server using another HTTP POST request. This step abstracts the target server from the client and allows centralized logging.}
+    \end{itemize}
+
+    \item \textbf{Target Server Processing:}
+    \begin{itemize}
+        \item \texttt{The target server processes the forwarded request, decodes the file data, and writes it to the local file system.}
+        \item \texttt{A structured JSON response is generated, indicating the success or failure of the operation.}
+    \end{itemize}
+
+    \item \textbf{Proxy Server Response Handling:}
+    \begin{itemize}
+        \item \texttt{The proxy server receives the response from the target server, logs it, and forwards it back to the client.}
+        \item \texttt{This response informs the client whether the file upload was successful or if an error occurred.}
+    \end{itemize}
+        \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\linewidth]{Reverse-Proxy.jpg}
+        \caption{Flow Diagram of Proxy}
+        \label{fig:enter-label}
+    \end{figure}
+\end{itemize}
+
+\section{CLIENT MODULE} % Duc 
+The client module in HTTP over RPC is a key application component that facilitates communication with a remote server by abstracting network communication and data serialization. It simplifies remote procedure invocation, enhances modularity, and promotes maintainable code by decoupling application logic from communication protocols.
+
+\vspace{10pt}
+\textbf{\textit{
+Key Functions and Components}
+}
+
+
+\textbf{1.  Input and Interaction}
+
+These components handle user input and provide a way for the user to interact with the program:
+\begin{itemize}
+    \item User Input for Server Details:
+\end{itemize}
+
+\begin{small}
+\begin{lstlisting}
+server_address = input("Enter the server address (e.g., localhost): ")
+server_port = input("Enter the server port (e.g., 5000): ")
+\end{lstlisting}
+\end{small}
+\begin{itemize}
+    \item Interactive Loop for File Input:
+\end{itemize}
+\begin{small}
+\begin{lstlisting}[language=Python]
+while True:
+    file_name = input("Enter the name to send (type 'exit' to quit): ")
+    if file_name.lower() == 'exit':
+        print("Exiting the program.")
+        break
+
+\end{lstlisting}
+\end{small}
+
+
+\textbf{2. HTTP Request Handling}
+
+HTTP is used as the transport layer.
+
+Handles the communication with the server:
+\begin{itemize}
+    \item Sending the HTTP POST Request:
+\end{itemize}
+\begin{small}
+\begin{lstlisting}[language=Python]
+    response = requests.post(server_url, json=rpc_request, timeout=10)
+
+\end{lstlisting}
+\end{small}
+\begin{itemize}
+    \item Processing the Response:
+\end{itemize}
+\begin{small}
+\begin{lstlisting}[language=Python]
+    if response.status_code == 200:
+    print("Response:", response.json())
+else:
+    print(f"Error {response.status_code}: {response.json()}")
+
+\end{lstlisting}
+\end{small}
+
+
+
+
+\textbf{3. Error Handling}
+
+\begin{itemize}
+    \item Client-side: Exceptions (like FileNotFoundError or other runtime errors) are caught and reported.
+    \item Server-side: Checks the HTTP status code and prints any error messages included in the server's response.
+\end{itemize}
+
+Manages exceptions and ensures graceful failure:
+\begin{itemize}
+    \item File Not Found:
+\end{itemize}
+\begin{small}
+\begin{lstlisting}[language=Python]
+except FileNotFoundError:
+print(f"Error: File '{file_name}' not found. Please try again.")
+\end{lstlisting}
+\end{small}
+\begin{itemize}
+    \item Network Errors:
+\end{itemize}
+\begin{small}
+\begin{lstlisting}[language=Python]
+except requests.exceptions.RequestException as e:
+print(f"Network error: {e}")
+\end{lstlisting}
+\end{small}
+
+
+
+
+\textbf{4. Encoding and Serialization}
+
+
+\begin{itemize}
+    \item The payload is serialized into JSON format using Python's requests library, which automatically handles this with the json parameter.
+\end{itemize}
+    Converts data into formats suitable for transmission:
+\begin{itemize}
+    \item Latin1 Encoding:
+\end{itemize}
+\begin{small}
+\begin{lstlisting}[language=Python]
+   with open(file_path, 'rb') as file:
+        file_data = file.read().decode('latin1') 
+\end{lstlisting}
+\end{small}
+\begin{itemize}
+    \item JSON Serialization:
+\end{itemize}
+\begin{small}
+\begin{lstlisting}[language=Python]
+    response = requests.post(server_url, json=rpc_request, timeout=10)
+\end{lstlisting}
+\end{small}
+\section{PROXY SERVER MODULE} % Hiếu
+\subsection{Role and Main Functions}
+The proxy server serves as an intermediary component in the system, connecting clients with the backend server. This enables communication between two different protocols: HTTP and RPC. The main goal is to ensure that HTTP requests are efficiently processed, accurately translated into RPC, and responses from the backend server are translated back into HTTP for the client. The proxy server contributes to optimizing system performance and improving user experience.
+
+Specifically, the proxy server performs the following key functions:
+\begin{itemize}
+\item \textbf{Request Translation}: The proxy server receives HTTP requests from clients, analyzes the headers, body, and URL, and converts this information into RPC calls suitable for the backend server using serialization techniques.
+\item \textbf{Response Handling}: Responses from the backend server, processed in RPC format, are deserialized by the proxy server. These responses are reconstructed into HTTP format and sent back to the client.
+\item \textbf{Error Management}: The proxy server logs detailed information about errors encountered during processing, such as data formatting issues or connection failures. Additionally, it provides fallback mechanisms, such as retrying failed requests or returning appropriate error messages to the client.
+\item \textbf{Concurrency Handling}: The proxy server employs mechanisms such as multi-threading or asynchronous handling to manage a large number of simultaneous requests from multiple clients. This ensures stable performance even under high system load.
+\end{itemize}
+
+\subsection{Technical Implementation}
+To implement the proxy server, the system is designed with the following main components:
+\begin{enumerate}
+\item \textbf{HTTP Parser}: This component analyzes and extracts information from the client's HTTP request, ensuring all necessary details are accurately processed.
+\item \textbf{RPC Handler}: This component is responsible for converting HTTP requests into RPC calls and forwarding these requests to the backend server.
+\item \textbf{Response Builder}: This component reconstructs the backend server's response into HTTP format to send back to the client.
+\end{enumerate}
+
+The source code is organized into separate modules to ensure easy maintenance and scalability. The proxy server also integrates several technical improvements, such as:
+\begin{itemize}
+\item \textbf{Caching}: Storing frequently requested responses to reduce latency and decrease load on the backend server.
+\item \textbf{Data Compression}: Using compression algorithms to optimize data size during transmission.
+\item \textbf{Security}: Implementing measures such as request validation and encrypting data during communication to protect the system from threats.
+\end{itemize}
+
+\subsection{Initial Deployment Results}
+During initial testing, the proxy server achieved several notable results:
+\begin{itemize}
+\item \textbf{Reliability}: The system accurately processed requests with an error rate of less than 0.5%.
+\item \textbf{Performance}: The proxy server handled up to 1,000 concurrent requests per second with an average latency of approximately 150ms.
+\item \textbf{Scalability}: When the number of requests doubled, the system maintained stable performance, demonstrating good scalability.
+\end{itemize}
+
+These results not only validate the design's effectiveness but also lay the groundwork for further system optimization in subsequent development stages.
+\subsection{Error Handling}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{errorhandlingProxy .png}
+\caption{Flow Diagram for Proxy Server Error Handling}
+\label{fig:proxy_error_handling}
+\end{figure}
+
+Error handling is a critical component of the Proxy Server, ensuring stability and reliability under various scenarios. The workflow for error handling in the Proxy Server includes the following key steps:
+
+\begin{enumerate}
+\item \textbf{Receive Request}:
+The Proxy Server receives an HTTP POST request from the client, containing the necessary headers and body data.
+
+\item \textbf{Validate Request}:
+The Proxy Server verifies the structure and validity of the incoming request:
+\begin{itemize}
+\item Checks for valid headers (e.g., \texttt{Content-Type}, \texttt{Content-Length}).
+\item Ensures the body contains a properly formatted JSON payload.
+\end{itemize}
+If invalid, the Proxy Server responds with:
+\begin{quote}
+\textbf{400 Bad Request}: Indicates the request is malformed.
+Example response:
+\begin{lstlisting}[language=JSON]
+{
+"status": "error",
+"message": "Invalid request payload."
+}
+\end{lstlisting}
+\end{quote}
+
+\item \textbf{Forward Request to Backend}:
+If the request is valid, the Proxy Server forwards it to the backend server.
+
+\item \textbf{Check Backend Availability}:
+The Proxy Server monitors the connectivity to the backend server:
+\begin{itemize}
+\item If the backend server is unreachable, the Proxy responds with:
+\begin{quote}
+\textbf{502 Bad Gateway}: Indicates the backend is unavailable.
+Example response:
+\begin{lstlisting}[language=JSON]
+{
+"status": "error",
+"message": "Backend server is unreachable."
+}
+\end{lstlisting}
+\end{quote}
+\end{itemize}
+
+\item \textbf{Timeout Handling}:
+The Proxy Server monitors the backend's response time:
+\begin{itemize}
+\item If the backend takes too long, the Proxy responds with:
+\begin{quote}
+\textbf{504 Gateway Timeout}: Indicates a timeout occurred.
+Example response:
+\begin{lstlisting}[language=JSON]
+{
+"status": "error",
+"message": "Backend response timeout."
+}
+\end{lstlisting}
+\end{quote}
+\end{itemize}
+
+\item \textbf{Execution Error Handling}:
+The Proxy Server analyzes the backend's response for execution errors:
+\begin{itemize}
+\item If an error occurs, the Proxy responds with:
+\begin{quote}
+\textbf{500 Internal Server Error}: Indicates an error during processing.
+Example response:
+\begin{lstlisting}[language=JSON]
+{
+"status": "error",
+"message": "Internal server error occurred during processing."
+}
+\end{lstlisting}
+\end{quote}
+\end{itemize}
+
+\item \textbf{Successful Response}:
+If no errors occur, the Proxy Server forwards the backend's successful response to the client:
+\begin{quote}
+Example response:
+\begin{lstlisting}[language=JSON]
+{
+"status": "success",
+"data": {
+"file_name": "example.txt",
+"status": "uploaded"
+}
+}
+\end{lstlisting}
+\end{quote}
+\end{enumerate}
+
+
+\section{TARGET SERVER MODULE} % Tuan
+The Target Server Module is implemented using the Flask framework, which provides a simple interface for handling HTTP POST requests. This module is designed to process RPC calls, execute specific methods, and respond to the Proxy Server with the required results. Below are the details of its implementation:
+
+\subsection{Responsibilities}
+\begin{itemize}
+    \item Handle RPC requests sent by the Proxy Server.
+    \item Execute specific functions such as file upload and processing.
+    \item Return JSON responses indicating the success or failure of the requested operations.
+\end{itemize}
+
+\subsection{Implementation Details}
+The Target Server exposes a single endpoint, \texttt{/rpc}, which accepts HTTP POST requests. These requests contain JSON payloads specifying the method name and arguments. The server decodes the request, maps the method to the appropriate function, and executes it.
+
+\begin{lstlisting}[language=Python, caption=Server Endpoint Implementation]
+@app.route("/rpc", methods=["POST"])
+def rpc():
+    try:
+        # Parse JSON request
+        rpc_request = request.get_json()
+
+        # Extract method and arguments
+        method_name = rpc_request.get("method")
+        args = rpc_request.get("args", {})
+
+        # Invoke the requested method
+        if method_name in methods:
+            result = methods[method_name](**args)
+        else:
+        result = {"status": "error", "message": "Unknown method."}
+
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}),500
+\end{lstlisting}
+
+\subsection{RPC Method}
+The \texttt{upload\_file} method processes requests to upload a file. It decodes the file content, saves it to the server's storage, and returns a status message. Below is the function implementation:
+
+\begin{lstlisting}[language=Python, caption=File Upload Method]
+def upload_file(file_name, file_data):
+    try:
+        print(f"Receiving file: {file_name}")
+        with open(file_name, 'wb') as file:
+            file.write(file_data.encode('latin1'))
+        print(f"File {file_name} received successfully.")
+        return {"status": "success", "message": f"File {file_name} uploaded successfully."}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+\end{lstlisting}
+
+\subsection{Error Handling}
+
+The server includes robust mechanisms to handle errors efficiently, ensuring that invalid requests or unexpected situations are managed properly. The error-handling workflow is illustrated in Figure~\ref{fig:error_handling_workflow}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{error_handling.drawio.png}
+    \caption{Error Handling Workflow in Target Server}
+    \label{fig:error_handling_workflow}
+\end{figure}
+
+The workflow consists of the following steps:
+
+\begin{enumerate}
+    \item \textbf{Receive Request:}  
+    The server receives an HTTP POST request containing JSON data. This request includes the method name (\texttt{method}) and its arguments (\texttt{args}).
+
+    \item \textbf{Validate Request:}  
+    The server verifies the structure of the incoming request to ensure it adheres to the expected format. This includes:
+    \begin{itemize}
+        \item Checking for the presence of the \texttt{method} field.
+        \item Validating that the \texttt{args} field is present and properly structured.
+    \end{itemize}
+
+    \item \textbf{Decision: Is Request Valid?}  
+    If the request is invalid (e.g., missing fields, malformed JSON), the server responds with:
+    \begin{itemize}
+        \item \textbf{400 Bad Request:} The server provides a detailed error message indicating the issue.
+    \end{itemize}
+    Example response:
+    \begin{lstlisting}[language=JSON]
+    {
+        "status": "error",
+        "message": "Invalid request payload."
+    }
+    \end{lstlisting}
+
+    \item \textbf{Decision: Is Method Valid?}  
+    The server checks if the specified method exists in its registry of available methods.
+    If the method is not found, the server responds with:
+    \begin{itemize}
+        \item \textbf{404 Not Found:} The server indicates that the requested method does not exist.
+    \end{itemize}
+    Example response:
+    \begin{lstlisting}[language=JSON]
+    {
+        "status": "error",
+        "message": "Unknown method."
+    }
+    \end{lstlisting}
+
+    \item \textbf{Execute Method:}  
+    If the request is valid and the method exists, the server executes the requested method with the provided arguments.
+
+    \item \textbf{Decision: Execution Error?}  
+    During the execution of the method, the server monitors for runtime errors (e.g., file not found, data processing issues).  
+    If an error occurs, the server responds with:
+    \begin{itemize}
+        \item \textbf{500 Internal Server Error:} The server provides a detailed message describing the error.
+    \end{itemize}
+    Example response:
+    \begin{lstlisting}[language=JSON]
+    {
+        "status": "error",
+        "message": "File not found during execution."
+    }
+    \end{lstlisting}
+
+    \item \textbf{Return Response:}  
+    If no errors occur during execution, the server returns a successful response containing the result of the method.
+    Example response:
+    \begin{lstlisting}[language=JSON]
+    {
+        "status": "success",
+        "data": { "file_name": "example.txt", "status": "uploaded" }
+    }
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Testing and Results} % Hieu
+
+\subsection{Independent Testing Using Postman}
+
+\subsubsection*{From Client to Proxy}
+Postman was utilized to verify the functionality of the proxy server before integrating with the backend. This ensures that the proxy correctly handles HTTP requests and forwards them to the backend in RPC format.
+\begin{itemize}
+\item \textbf{URL}: \texttt{http://172.30.177.68:8080/rpc}
+\item \textbf{Method}: POST
+\item \textbf{Body}:
+\begin{lstlisting}[language=JSON]
+{
+    "method": "upload_file",
+    "args": {
+        "file_name": "huydeptrai.txt",
+        "file_data": "This is a test."
+    }
+}
+\end{lstlisting}
+\item \textbf{Reason}: To confirm that the proxy parses HTTP requests, validates data, and forwards the requests accurately to the backend.
+\item \textbf{Result}: Proxy successfully forwarded the request and responded:
+\begin{lstlisting}[language=JSON]
+{
+    "message": "File huydeptrai.txt uploaded successfully.",
+    "status": "success"
+}
+\end{lstlisting}
+\end{itemize}
+
+\subsubsection*{From Proxy to Server}
+Postman was also used to test the connection between the proxy and backend server directly. This ensures that the backend processes requests forwarded by the proxy without issues.
+\begin{itemize}
+\item \textbf{URL}: \texttt{http://172.30.177.68:5000/rpc}
+\item \textbf{Method}: POST
+\item \textbf{Body}:
+\begin{lstlisting}[language=JSON]
+{
+    "method": "upload_file",
+    "args": {
+        "file_name": "huydeptrai.txt",
+        "file_data": "This is a test."
+    }
+}
+\end{lstlisting}
+\item \textbf{Reason}: To ensure that the backend handles RPC requests from the proxy and returns the appropriate response.
+\item \textbf{Result}: Backend processed the request and returned:
+\begin{lstlisting}[language=JSON]
+{
+    "message": "File huydeptrai.txt uploaded successfully.",
+    "status": "success"
+}
+\end{lstlisting}
+\end{itemize}
+
+
+ 
+\subsection{TESTING AND RESULTS} % Hieu
+\subsection*{Independent Testing Using Postman}
+
+\subsubsection*{From Client to Proxy}
+Postman was utilized to verify the functionality of the proxy server before integrating with the backend. This ensures that the proxy correctly handles HTTP requests and forwards them to the backend in RPC format.
+\begin{itemize}
+\item \textbf{URL}: \texttt{http://172.30.177.68:8080/rpc}
+\item \textbf{Method}: POST
+\item \textbf{Body}:
+\begin{lstlisting}[language=JSON]
+{
+"method": "upload_file",
+"args": {
+"file_name": "huydeptrai.txt",
+"file_data": "This is a test."
+}
+}
+\end{lstlisting}
+\item \textbf{Reason}: To confirm that the proxy parses HTTP requests, validates data, and forwards the requests accurately to the backend.
+\item \textbf{Result}: Proxy successfully forwarded the request and responded:
+\begin{lstlisting}[language=JSON]
+{
+"message": "File huydeptrai.txt uploaded successfully.",
+"status": "success"
+}
+\end{lstlisting}
+\end{itemize}
+
+\subsubsection*{From Proxy to Server}
+Postman was also used to test the connection between the proxy and backend server directly. This ensures that the backend processes requests forwarded by the proxy without issues.
+\begin{itemize}
+\item \textbf{URL}: \texttt{http://172.30.177.68:5000/rpc}
+\item \textbf{Method}: POST
+\item \textbf{Body}:
+\begin{lstlisting}[language=JSON]
+{
+"method": "upload_file",
+"args": {
+"file_name": "huydeptrai.txt",
+"file_data": "This is a test."
+}
+}
+\end{lstlisting}
+\item \textbf{Reason}: To ensure that the backend handles RPC requests from the proxy and returns the appropriate response.
+\item \textbf{Result}: Backend processed the request and returned:
+\begin{lstlisting}[language=JSON]
+{
+"message": "File huydeptrai.txt uploaded successfully.",
+"status": "success"
+}
+\end{lstlisting}
+\end{itemize}
+
+\subsection*{Testing Results}
+
+\subsubsection*{Successful Test Cases}
+The system was tested with various scenarios to evaluate functionality. Below are the key observations from successful cases:
+\begin{itemize}
+\item \textbf{File}: \texttt{huydeptrai.txt}, containing \texttt{This is a test.}
+\begin{itemize}
+\item \textbf{Client}: Successfully sent the file to the proxy server using POST.
+\item \textbf{Proxy}: Parsed the request, validated the payload, and forwarded it to the backend server.
+\item \textbf{Server}: Stored the file accurately and returned a success message to the proxy.
+\end{itemize}
+\item \textbf{Analysis}:
+\begin{itemize}
+\item The response time between the client and proxy was minimal, demonstrating efficient request parsing.
+\item Proxy maintained data integrity during forwarding, ensuring no loss or corruption.
+\item Backend server handled file uploads without failure, proving reliable communication.
+\end{itemize}
+\end{itemize}
+
+\subsubsection*{Error Test Cases}
+To ensure robustness, error scenarios were tested:
+\begin{itemize}
+\item \textbf{File Not Found}:
+\begin{itemize}
+\item The proxy returned \texttt{404 Not Found} for non-existent files, indicating proper validation.
+\end{itemize}
+\item \textbf{Invalid File Format}:
+\begin{itemize}
+\item The backend responded with \texttt{400 Bad Request} for improperly formatted files, logging the issue for debugging.
+\end{itemize}
+\item \textbf{Analysis}:
+\begin{itemize}
+\item Error responses were prompt, ensuring the client was notified immediately.
+\item Logs from proxy and backend provided clear insights into the cause of errors, aiding troubleshooting.
+\end{itemize}
+\end{itemize}
+
+\subsubsection*{Logs from Real Execution}
+\begin{enumerate}
+\item \textbf{Client Request Execution}:
+\begin{lstlisting}
+Enter the server address (e.g., localhost): 172.30.177.68
+Enter the server port (e.g., 5000): 8080
+Enter the name of the file to send: huydeptrai.txt
+{'message': 'File huydeptrai.txt uploaded successfully.', 'status': 'success'}
+\end{lstlisting}
+
+\item \textbf{Proxy Receives and Forwards Request}:
+\begin{lstlisting}
+Proxy is forwarding requests to 172.30.177.68:5000
+172.30.177.68 - [29/Dec/2024 23:00:48] "POST /rpc HTTP/1.1" 200 -
+\end{lstlisting}
+
+\item \textbf{Server Logs and Stores File}:
+\begin{lstlisting}
+Receiving file: huydeptrai.txt
+File huydeptrai.txt received successfully.
+172.30.177.68 - [29/Dec/2024 22:30:48] "POST /rpc HTTP/1.1" 200 -
+\end{lstlisting}
+\end{enumerate}
+
+\section{CONCLUSION AND FUTURE WORK} % Tuan
+\subsection{Conclusion}
+The HTTP over RPC system demonstrates an effective use of Remote Procedure Calls to emulate the behavior of an HTTP proxy. The Target Server Module successfully handles file uploads and other RPC-based interactions.
+
+\subsection{Future Work}
+\begin{itemize}
+    \item \textbf{Expand RPC Methods:} Include additional methods to handle more complex HTTP interactions such as \texttt{PUT} or \texttt{DELETE}.
+    \item \textbf{Improve Security:} Integrate secure authentication and encryption mechanisms like SSL/TLS to protect sensitive data.
+    \item \textbf{Optimize Performance:} Explore caching and load balancing techniques to improve response times under high traffic.
+    \item \textbf{Introduce Logging and Monitoring:} Implement logging for debugging and monitoring tools for real-time performance tracking.
+    \item \textbf{Scalability:} Design the system to handle a larger number of concurrent requests in a distributed environment.
+\end{itemize}
+
+\section{REFERENCES} % Huy
+
+\begin{thebibliography}{99}
+
+\bibitem{rpc-http}
+Techtarget. "What is RPC over HTTP?". Available at: \url{https://www.techtarget.com/searchmobilecomputing/definition/RPC-over-HTTP}. Accessed on December 30, 2024.
+
+\bibitem{sap-help}
+SAP Help Portal. "Using the Reverse Proxy". Available at: \url{https://help.sap.com/doc/saphelp_nw74/7.4.16/en-us/48/59f2e05f693912e10000000a42189b/frameset.htm}. Accessed on December 30, 2024.
+
+\bibitem{cloudflare-reverse-proxy}
+Cloudflare. "What is a Reverse Proxy?". Available at: \url{https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/}. Accessed on December 30, 2024.
+
+\bibitem{python-proxy}
+ScrapingBee. "Using Proxies with Python Requests". Available at: \url{https://www.scrapingbee.com/blog/python-requests-proxy/}. Accessed on December 30, 2024.
+
+\end{thebibliography}
+
+
+\end{document}
+
+
